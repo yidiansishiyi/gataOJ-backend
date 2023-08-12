@@ -8,7 +8,7 @@ create database if not exists yidiansishiyi;
 use yidiansishiyi;
 
 -- 用户表
-create table  if not exists user
+create table if not exists user
 (
     id           bigint auto_increment comment 'id'
         primary key,
