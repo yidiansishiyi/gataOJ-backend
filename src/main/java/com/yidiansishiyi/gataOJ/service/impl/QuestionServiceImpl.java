@@ -21,7 +21,6 @@ import com.yidiansishiyi.gataOJ.mapper.QuestionMapper;
 import com.yidiansishiyi.gataOJ.service.UserService;
 import com.yidiansishiyi.gataOJ.utils.SqlUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.ss.formula.functions.T;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -37,8 +36,6 @@ import java.util.stream.Collectors;
 @Service
 public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question>
     implements QuestionService{
-
-    private final static Gson GSON = new Gson();
 
     @Resource
     private UserService userService;

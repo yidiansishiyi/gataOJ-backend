@@ -1,6 +1,5 @@
 package com.yidiansishiyi.gataOJ.controller;
 
-import com.yidiansishiyi.gataOJ.wxmp.WxMpConstant;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
