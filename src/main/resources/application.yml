@@ -87,3 +87,5 @@ cos:
     secretKey: xxx
     region: xxx
     bucket: xxx
+codesandbox:
+  type: remote

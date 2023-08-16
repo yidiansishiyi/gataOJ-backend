@@ -13,7 +13,7 @@ import com.yidiansishiyi.gataOJ.model.dto.questionsubmit.QuestionSubmitAddReques
 import com.yidiansishiyi.gataOJ.model.dto.questionsubmit.QuestionSubmitQueryRequest;
 import com.yidiansishiyi.gataOJ.model.entity.*;
 import com.yidiansishiyi.gataOJ.model.enums.QuestionSubmitLanguageEnum;
-import com.yidiansishiyi.gataOJ.model.vo.QuestionSubmitStatusEnum;
+import com.yidiansishiyi.gataOJ.model.enums.QuestionSubmitStatusEnum;
 import com.yidiansishiyi.gataOJ.model.vo.QuestionSubmitVO;
 import com.yidiansishiyi.gataOJ.model.vo.QuestionVO;
 import com.yidiansishiyi.gataOJ.service.QuestionService;

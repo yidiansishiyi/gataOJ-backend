@@ -1,4 +1,4 @@
-package com.yidiansishiyi.gataOJ.model.vo;
+package com.yidiansishiyi.gataOJ.model.enums;
 
 import org.apache.commons.lang3.ObjectUtils;
 
