@@ -1,4 +1,4 @@
-package com.yidiansishiyi.gataoj.judge.model;
+package com.yidiansishiyi.gataoj.judge.codesandbox.model;
 
 import lombok.Builder;
 import lombok.Data;

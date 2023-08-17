@@ -1,16 +1,14 @@
-package com.yidiansishiyi.gataoj.judge;
+package com.yidiansishiyi.gataoj.judge.codesandbox;
 
-import com.yidiansishiyi.gataoj.judge.model.ExecuteCodeRequest;
-import com.yidiansishiyi.gataoj.judge.model.ExecuteCodeResponse;
+import com.yidiansishiyi.gataoj.judge.codesandbox.model.ExecuteCodeRequest;
+import com.yidiansishiyi.gataoj.judge.codesandbox.model.ExecuteCodeResponse;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+@AllArgsConstructor
 @Slf4j
 public class CodeSandboxProxy implements CodeSandbox{
     private final CodeSandbox codeSandbox;
-
-    public CodeSandboxProxy(CodeSandbox codeSandbox) {
-        this.codeSandbox = codeSandbox;
-    }
 
     @Override
     public ExecuteCodeResponse executeCode(ExecuteCodeRequest executeCodeRequest) {

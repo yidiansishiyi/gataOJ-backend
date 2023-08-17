@@ -1,8 +1,8 @@
 package com.yidiansishiyi.gataoj.judge.impl;
 
-import com.yidiansishiyi.gataoj.judge.CodeSandbox;
-import com.yidiansishiyi.gataoj.judge.CodeSandboxFactory;
-import com.yidiansishiyi.gataoj.judge.model.ExecuteCodeRequest;
+import com.yidiansishiyi.gataoj.judge.codesandbox.CodeSandbox;
+import com.yidiansishiyi.gataoj.judge.codesandbox.CodeSandboxFactory;
+import com.yidiansishiyi.gataoj.judge.codesandbox.model.ExecuteCodeRequest;
 import com.yidiansishiyi.gataoj.model.enums.QuestionSubmitLanguageEnum;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;

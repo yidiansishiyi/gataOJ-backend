@@ -1,8 +1,8 @@
-package com.yidiansishiyi.gataoj.judge;
+package com.yidiansishiyi.gataoj.judge.codesandbox;
 
-import com.yidiansishiyi.gataoj.judge.impl.ExampleCodeSandbox;
-import com.yidiansishiyi.gataoj.judge.impl.RemoteCodeSandbox;
-import com.yidiansishiyi.gataoj.judge.impl.ThirdPartyCodeSandbox;
+import com.yidiansishiyi.gataoj.judge.codesandbox.impl.ExampleCodeSandbox;
+import com.yidiansishiyi.gataoj.judge.codesandbox.impl.RemoteCodeSandbox;
+import com.yidiansishiyi.gataoj.judge.codesandbox.impl.ThirdPartyCodeSandbox;
 
 /**
  * 代码沙箱工厂(静态根据传值判断选择工厂类型)

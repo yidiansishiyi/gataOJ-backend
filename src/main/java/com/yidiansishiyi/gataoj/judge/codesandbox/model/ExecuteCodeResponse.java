@@ -1,4 +1,4 @@
-package com.yidiansishiyi.gataoj.judge.model;
+package com.yidiansishiyi.gataoj.judge.codesandbox.model;
 
 import com.yidiansishiyi.gataoj.model.dto.questionsubmit.JudgeInfo;
 import lombok.Data;

@@ -1,8 +1,8 @@
-package com.yidiansishiyi.gataoj.judge.impl;
+package com.yidiansishiyi.gataoj.judge.codesandbox.impl;
 
-import com.yidiansishiyi.gataoj.judge.CodeSandbox;
-import com.yidiansishiyi.gataoj.judge.model.ExecuteCodeRequest;
-import com.yidiansishiyi.gataoj.judge.model.ExecuteCodeResponse;
+import com.yidiansishiyi.gataoj.judge.codesandbox.CodeSandbox;
+import com.yidiansishiyi.gataoj.judge.codesandbox.model.ExecuteCodeRequest;
+import com.yidiansishiyi.gataoj.judge.codesandbox.model.ExecuteCodeResponse;
 
 import com.yidiansishiyi.gataoj.model.dto.questionsubmit.JudgeInfo;
 import com.yidiansishiyi.gataoj.model.enums.JudgeInfoMessageEnum;
