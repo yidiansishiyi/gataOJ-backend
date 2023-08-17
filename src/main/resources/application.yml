@@ -1,6 +1,6 @@
 spring:
   application:
-    name: springboot-init
+    name: gataOJ-backend
   # 默认 dev 环境
   profiles:
     active: dev
@@ -88,4 +88,4 @@ cos:
     region: xxx
     bucket: xxx
 codesandbox:
-  type: remote
+  type: example
