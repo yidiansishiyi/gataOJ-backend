@@ -62,3 +62,42 @@ create table if not exists question_submit
     index idx_userId (userId)
 ) comment '题目提交';
 
+-- 题目点赞（硬删除）
+create table if not exists question_thumb
+(
+    id         bigint auto_increment comment 'id' primary key,
+    questionId bigint                             not null comment '题名 id',
+    userId     bigint                             not null comment '创建用户 id',
+    createTime datetime default CURRENT_TIMESTAMP not null comment '创建时间',
+    updateTime datetime default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间',
+    index idx_questionId (questionId),
+    index idx_userId (userId)
+) comment '题目点赞';
+
+-- 题目收藏（硬删除）
+create table if not exists question_favour
+(
+    id         bigint auto_increment comment 'id' primary key,
+    questionId     bigint                         not null comment '题名 id',
+    userId     bigint                             not null comment '创建用户 id',
+    createTime datetime default CURRENT_TIMESTAMP not null comment '创建时间',
+    updateTime datetime default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间',
+    index idx_questionId (questionId),
+    index idx_userId (userId)
+) comment '帖子收藏';
+
+
+create table if not exists question_comment
+(
+    id         bigint auto_increment comment 'id' primary key,
+    userId     bigint            null comment '用户id',
+    entityType int               null comment '实体类型',
+    questionId bigint            not null comment '题名 id',
+    parentId   bigint            null comment '父级 id',
+    content    text              null comment '内容',
+    status     int               null comment '状态',
+    isDelete   tinyint default 0 null comment '是否删除',
+    createTime timestamp         null comment '创建时间',
+    index idx_questionId (questionId),
+    index idx_userId (userId)
+) comment '题目评论' charset = utf8;
