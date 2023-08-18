@@ -84,7 +84,7 @@ create table if not exists question_favour
     updateTime datetime default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间',
     index idx_questionId (questionId),
     index idx_userId (userId)
-) comment '帖子收藏';
+) comment '题目收藏';
 
 
 create table if not exists question_comment

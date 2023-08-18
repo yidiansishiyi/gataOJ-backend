@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 */
 @Service
 public class QuestionCommentServiceImpl extends ServiceImpl<QuestionCommentMapper, QuestionComment>
-    implements QuestionCommentService{
+    implements QuestionCommentService {
 
 }
 

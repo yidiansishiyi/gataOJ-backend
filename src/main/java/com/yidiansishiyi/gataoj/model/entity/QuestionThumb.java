@@ -15,6 +15,7 @@ import lombok.Data;
 @TableName(value ="question_thumb")
 @Data
 public class QuestionThumb implements Serializable {
+
     /**
      * id
      */

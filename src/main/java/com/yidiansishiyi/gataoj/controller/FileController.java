@@ -1,6 +1,7 @@
 package com.yidiansishiyi.gataoj.controller;
 
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.dfa.WordTree;
 import com.yidiansishiyi.gataoj.common.BaseResponse;
 import com.yidiansishiyi.gataoj.common.ErrorCode;
 import com.yidiansishiyi.gataoj.common.ResultUtils;
@@ -63,6 +64,7 @@ public class FileController {
         String filename = uuid + "-" + multipartFile.getOriginalFilename();
         String filepath = String.format("/%s/%s/%s", fileUploadBizEnum.getValue(), loginUser.getId(), filename);
         File file = null;
+        WordTree wordTree = new WordTree();
         try {
             // 上传文件
             file = File.createTempFile(filepath, null);

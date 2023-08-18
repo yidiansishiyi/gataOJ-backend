@@ -1,3 +1,4 @@
+!/src/main/resources/application.yml
 HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
@@ -141,5 +142,3 @@ fabric.properties
 
 # Android studio 3.1+ serialized cache file
 .idea/caches/build_file_checksums.ser
-
-!/src/main/resources/application.yml
