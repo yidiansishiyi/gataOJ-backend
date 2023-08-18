@@ -8,7 +8,7 @@ import java.io.Serializable;
  * 更新请求
  */
 @Data
-public class CommentUpdateRequest implements Serializable {
+public class QuestionCommentUpdateRequest implements Serializable {
 
     /**
      * id

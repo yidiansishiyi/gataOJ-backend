@@ -24,7 +24,7 @@ public class QuestionCommentAddRequest implements Serializable {
     /**
      * 评论所属帖子 id
      */
-    private Long postId;
+    private Long questionId;
 
     /**
      * 评论内容

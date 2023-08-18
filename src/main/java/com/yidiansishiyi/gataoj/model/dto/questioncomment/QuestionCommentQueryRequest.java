@@ -12,7 +12,7 @@ import java.io.Serializable;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class CommentQueryRequest extends PageRequest implements Serializable {
+public class QuestionCommentQueryRequest extends PageRequest implements Serializable {
 
     /**
      * id
@@ -40,9 +40,9 @@ public class CommentQueryRequest extends PageRequest implements Serializable {
     private Long parentId;
 
     /**
-     * 评论所属帖子 id
+     * 评论所属题目 id
      */
-    private Long postId;
+    private Long questionId;
 
     private static final long serialVersionUID = 1L;
 }

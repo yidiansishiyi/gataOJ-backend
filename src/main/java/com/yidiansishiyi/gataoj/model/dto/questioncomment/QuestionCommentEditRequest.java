@@ -9,7 +9,7 @@ import java.io.Serializable;
  *
  */
 @Data
-public class CommentEditRequest implements Serializable {
+public class QuestionCommentEditRequest implements Serializable {
 
     /**
      * id
