@@ -1,7 +1,6 @@
 package com.yidiansishiyi.gataoj.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.google.gson.Gson;
 import com.yidiansishiyi.gataoj.annotation.AuthCheck;
 import com.yidiansishiyi.gataoj.common.BaseResponse;
 import com.yidiansishiyi.gataoj.common.DeleteRequest;
@@ -11,7 +10,6 @@ import com.yidiansishiyi.gataoj.constant.UserConstant;
 import com.yidiansishiyi.gataoj.exception.BusinessException;
 import com.yidiansishiyi.gataoj.exception.ThrowUtils;
 import com.yidiansishiyi.gataoj.model.dto.questioncomment.QuestionCommentAddRequest;
-import com.yidiansishiyi.gataoj.model.dto.questioncomment.QuestionCommentEditRequest;
 import com.yidiansishiyi.gataoj.model.dto.questioncomment.QuestionCommentQueryRequest;
 import com.yidiansishiyi.gataoj.model.dto.questioncomment.QuestionCommentUpdateRequest;
 import com.yidiansishiyi.gataoj.model.entity.QuestionComment;
@@ -45,8 +43,6 @@ public class QuestionCommentController {
 
     @Resource
     private UserService userService;
-
-    private final static Gson GSON = new Gson();
 
     /**
      * 创建
@@ -158,40 +154,9 @@ public class QuestionCommentController {
         long current = commentQueryRequest.getCurrent();
         long size = commentQueryRequest.getPageSize();
         // 限制爬虫
-        String sqlComment = questionCommentService.getQueryWrapper(commentQueryRequest).getSqlSelect();
-        System.out.println(sqlComment + "????????????????????????");
         ThrowUtils.throwIf(size > 20, ErrorCode.PARAMS_ERROR);
         Page<QuestionComment> commentPage = questionCommentService.page(new Page<>(current, size),
                 questionCommentService.getQueryWrapper(commentQueryRequest));
         return ResultUtils.success(questionCommentService.getCommentVOPage(commentPage));
     }
-
-    /**
-     * 编辑（用户）
-     *
-     * @param commentEditRequest
-     * @param request
-     * @return
-     */
-    @PostMapping("/edit")
-    public BaseResponse<Boolean> editComment(@RequestBody QuestionCommentEditRequest commentEditRequest, HttpServletRequest request) {
-        if (commentEditRequest == null || commentEditRequest.getId() <= 0) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR);
-        }
-        QuestionComment comment = new QuestionComment();
-        BeanUtils.copyProperties(commentEditRequest, comment);
-
-        User loginUser = userService.getLoginUser(request);
-        long id = commentEditRequest.getId();
-        // 判断是否存在
-        QuestionComment oldComment = questionCommentService.getById(id);
-        ThrowUtils.throwIf(oldComment == null, ErrorCode.NOT_FOUND_ERROR);
-        // 仅本人或管理员可编辑
-        if (!oldComment.getUserId().equals(loginUser.getId()) && !userService.isAdmin(loginUser)) {
-            throw new BusinessException(ErrorCode.NO_AUTH_ERROR);
-        }
-        boolean result = questionCommentService.updateById(comment);
-        return ResultUtils.success(result);
-    }
-
 }
