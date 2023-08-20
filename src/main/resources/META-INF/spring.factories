@@ -1,2 +1,0 @@
-# spring boot start
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.yidiansishiyi.gataoj.config.ThreadPoolExecutorConfig

@@ -8,6 +8,11 @@ import com.yidiansishiyi.gataoj.model.dto.questionsubmit.QuestionSubmitQueryRequ
 import com.yidiansishiyi.gataoj.model.entity.QuestionSubmit;
 import com.yidiansishiyi.gataoj.model.entity.User;
 import com.yidiansishiyi.gataoj.model.vo.QuestionSubmitVO;
+import org.apache.poi.ss.formula.functions.T;
+import org.springframework.scheduling.annotation.Async;
+
+import java.util.Collection;
+import java.util.LinkedList;
 
 /**
  * 题目提交服务
@@ -51,4 +56,7 @@ public interface QuestionSubmitService extends IService<QuestionSubmit> {
      * @return
      */
     Page<QuestionSubmitVO> getQuestionSubmitVOPage(Page<QuestionSubmit> questionSubmitPage, User loginUser);
+
+    @Async
+    boolean saveBatchAsync(LinkedList entityList, int batchSize);
 }

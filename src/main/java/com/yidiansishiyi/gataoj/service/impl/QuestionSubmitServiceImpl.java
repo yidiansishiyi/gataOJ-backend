@@ -127,6 +127,11 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
     }
 
     @Override
+    public boolean saveBatchAsync(LinkedList entityList, int batchSize) {
+        return  this.saveBatch(entityList, batchSize);
+    }
+
+    @Override
     public long doQuestionSubmit(QuestionSubmitAddRequest questionSubmitAddRequest, User loginUser) {
         String language = questionSubmitAddRequest.getLanguage();
         QuestionSubmitLanguageEnum languageEnum = QuestionSubmitLanguageEnum.getEnumByValue(language);

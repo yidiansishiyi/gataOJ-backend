@@ -1,4 +1,5 @@
 package com.yidiansishiyi.gataoj.mapper;
+import java.util.ArrayList;
 import java.util.Date;
 
 import com.yidiansishiyi.gataoj.model.entity.QuestionSubmit;
@@ -10,8 +11,8 @@ import org.springframework.util.StopWatch;
 
 import javax.annotation.Resource;
 import java.util.LinkedList;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ThreadPoolExecutor;
+import java.util.List;
+import java.util.concurrent.*;
 
 
 @Slf4j
@@ -40,7 +41,7 @@ class QuestionSubmitMapperTest {
             questionSubmit.setUserId(1685290200697200642L);
             userList.add(questionSubmit);
         }
-        questionSubmitService.saveBatch(userList, INSERT_NUM*3); // 模拟插入10万条数据
+        boolean b = questionSubmitService.saveBatchAsync(userList, INSERT_NUM * 3);// 模拟插入10万条数据
         stopWatch.stop();
         System.out.println("花费时间：" + stopWatch.getTotalTimeMillis());
     }
@@ -83,11 +84,81 @@ class QuestionSubmitMapperTest {
                 stopWatch.stop();
                 System.out.println("张三3");
                 System.out.println("花费时间：" + stopWatch.getTotalTimeMillis());
-            }, threadPoolExecutor);
+            }, threadPoolExecutor).join();
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             throw new RuntimeException(e);
         }
     }
+
+    @Test
+    public void doInsertAnse() throws InterruptedException {
+        System.out.println("张三1");
+        StopWatch stopWatch = new StopWatch(); // 用来监听执行时间
+        stopWatch.start();
+        for (int i = 0; i < 3; i++) {
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run(){
+                    System.out.println("张三");
+                    final int INSERT_NUM = 100000;
+                    LinkedList<QuestionSubmit> userList = new LinkedList<>();
+                    for (int i = 0; i < INSERT_NUM; i++) {
+                        QuestionSubmit questionSubmit = new QuestionSubmit();
+                        questionSubmit.setLanguage("java");
+                        questionSubmit.setCode("1+3=5");
+                        questionSubmit.setJudgeInfo("{}");
+                        questionSubmit.setStatus(0);
+                        questionSubmit.setQuestionId(1689905663431520258L);
+                        questionSubmit.setUserId(1685290200697200642L);
+                        userList.add(questionSubmit);
+                    }
+                    System.out.println("插入");
+                    boolean b = questionSubmitService.saveBatch(userList, INSERT_NUM);// 模拟插入10万条数据
+                }
+            });
+            thread.setName("数据插入线程" );
+            thread.start();
+            thread.join();
+        }
+        stopWatch.stop();
+        System.out.println("张三3");
+        System.out.println("花费时间：" + stopWatch.getTotalTimeMillis());
+    }
+
+//    private ExecutorService executorService = new ThreadPoolExecutor(40, 1000, 10000, TimeUnit.MINUTES, new ArrayBlockingQueue<>(10000)); // 定义线程池
+
+
+    @Test
+    public void doConcurrencyInsertUsers() {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        // 分十组
+        List<CompletableFuture<Void>> futureList = new ArrayList<>();
+        final int INSERT_NUM = 100000;
+        for (int i = 0; i < 3; i++) {
+            LinkedList<QuestionSubmit> userList = new LinkedList<>();
+            for (int j = 0; j < INSERT_NUM; j++) {
+                QuestionSubmit questionSubmit = new QuestionSubmit();
+                questionSubmit.setLanguage("java");
+                questionSubmit.setCode("1+3=5");
+                questionSubmit.setJudgeInfo("{}");
+                questionSubmit.setStatus(0);
+                questionSubmit.setQuestionId(1689905663431520258L);
+                questionSubmit.setUserId(1685290200697200642L);
+                userList.add(questionSubmit);
+            }
+            // 异步执行
+            CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
+                System.out.println("threadName: " + Thread.currentThread().getName());
+                questionSubmitService.saveBatch(userList, INSERT_NUM);
+            }, threadPoolExecutor);
+            futureList.add(future);
+        }
+        CompletableFuture.allOf(futureList.toArray(new CompletableFuture[]{})).join();
+        stopWatch.stop();
+        System.out.println(stopWatch.getTotalTimeMillis());
+    }
+
 
 }
