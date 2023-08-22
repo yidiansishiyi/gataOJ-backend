@@ -1,6 +1,5 @@
 package com.yidiansishiyi.gataoj.mapper;
 import java.util.ArrayList;
-import java.util.Date;
 
 import com.yidiansishiyi.gataoj.model.entity.QuestionSubmit;
 import com.yidiansishiyi.gataoj.service.QuestionSubmitService;

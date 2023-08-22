@@ -3,6 +3,7 @@ package com.yidiansishiyi.gataoj.controller;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.dfa.WordTree;
 import com.yidiansishiyi.gataoj.common.BaseResponse;
+import com.yidiansishiyi.gataoj.common.BucketName;
 import com.yidiansishiyi.gataoj.common.ErrorCode;
 import com.yidiansishiyi.gataoj.common.ResultUtils;
 import com.yidiansishiyi.gataoj.constant.FileConstant;
@@ -13,33 +14,57 @@ import com.yidiansishiyi.gataoj.model.entity.User;
 import com.yidiansishiyi.gataoj.model.enums.FileUploadBizEnum;
 import com.yidiansishiyi.gataoj.service.UserService;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import javax.annotation.Resource;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.yidiansishiyi.gataoj.service.impl.FileUploadServiceImpl;
+import com.yidiansishiyi.gataoj.utils.MinioUtil;
+import io.minio.errors.*;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import java.net.URLEncoder;
+
+
+import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+
 
 /**
  * 文件接口
  *
  * @author  sanqi
- *  
+ *
  */
 @RestController
 @RequestMapping("/file")
 @Slf4j
 public class FileController {
 
+    @Value("${minio.url}")
+    private String url;
+
     @Resource
     private UserService userService;
 
     @Resource
     private CosManager cosManager;
+
+    @Autowired
+    private MinioUtil minioUtil;
 
     /**
      * 文件上传
@@ -106,5 +131,99 @@ public class FileController {
                 throw new BusinessException(ErrorCode.PARAMS_ERROR, "文件类型错误");
             }
         }
+    }
+
+
+    @ApiOperation("上传一个文件")
+    @PostMapping(value = "/uploadfile")
+    public BaseResponse fileupload(@RequestPart("uploadfile") MultipartFile uploadfile, @RequestParam String bucket,
+                                 @RequestParam(required=false) String objectName){
+        try {
+            minioUtil.createBucket(bucket);
+            if (objectName != null) {
+                minioUtil.uploadFile(uploadfile.getInputStream(), bucket, objectName+"/"+uploadfile.getOriginalFilename());
+            } else {
+                minioUtil.uploadFile(uploadfile.getInputStream(), bucket, uploadfile.getOriginalFilename());
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return ResultUtils.success("上传成功");
+    }
+
+    @ApiOperation("列出所有的桶")
+    @GetMapping(value = "/listBuckets")
+    public BaseResponse listBuckets() throws Exception {
+        return ResultUtils.success(minioUtil.listBuckets());
+    }
+
+    @ApiOperation("递归列出一个桶中的所有文件和目录")
+    @GetMapping(value = "/listFiles")
+    public BaseResponse listFiles(@RequestParam String bucket) {
+        try {
+            return ResultUtils.success( minioUtil.listFiles(bucket));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @ApiOperation("下载一个文件")
+    @GetMapping(value = "/downloadFile")
+    public void downloadFile(@RequestParam String bucket, @RequestParam String objectName,
+                             HttpServletResponse response) {
+        InputStream stream = null;
+        ServletOutputStream output = null;
+        try {
+            stream = minioUtil.download(bucket, objectName);
+            output = response.getOutputStream();
+            response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(objectName.substring(objectName.lastIndexOf("/") + 1), "UTF-8"));
+            response.setContentType("application/octet-stream");
+            response.setCharacterEncoding("UTF-8");
+            IOUtils.copy(stream, output);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+
+    @ApiOperation("删除一个文件")
+    @GetMapping(value = "/deleteFile")
+    public BaseResponse deleteFile(@RequestParam String bucket, @RequestParam String objectName){
+        try {
+            minioUtil.deleteObject(bucket, objectName);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return ResultUtils.success("删除成功");
+    }
+
+    @ApiOperation("删除一个桶")
+    @GetMapping(value = "/deleteBucket")
+    public BaseResponse deleteBucket(@RequestParam String bucket) {
+        try {
+            minioUtil.deleteBucket(bucket);
+        } catch (Exception e) {
+            log.error("删除错误",e.getMessage());
+            throw new RuntimeException(e);
+        }
+        return ResultUtils.success("删除成功");
+    }
+
+    @ApiOperation("图片文件上传")
+    @PostMapping("/geturl")
+    public BaseResponse<String> geturl(@RequestPart("file")MultipartFile file) {
+        String imgurl= null;
+        try {
+            String fileupload = minioUtil.fileupload(file, BucketName.Image);
+            System.out.println(fileupload);
+            imgurl = url+fileupload;
+        } catch (Exception e) {
+            log.error("文件上传错误",e.getMessage());
+            throw new RuntimeException(e);
+        }
+        return ResultUtils.success(imgurl);
+
     }
 }

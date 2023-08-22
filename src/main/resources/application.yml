@@ -14,6 +14,12 @@ spring:
     # store-type: redis
     # 30 天过期
     timeout: 2592000
+  thread:
+    pool:
+      core-pool-size: 40
+      maximum-pool-size: 1000
+      keep-alive-time: 10000
+      capacity: 10000
   # 数据库配置
   # todo 需替换配置
   datasource:
@@ -21,6 +27,11 @@ spring:
     url: jdbc:mysql://124.222.184.3:3306/yidiansishiyi
     username: yidiansishiyi
     password: zyeE75mZjmxm7XGT
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/yidiansishiyi
+#    username: root
+#    password: root
   # Redis 配置
   # todo 需替换配置，然后取消注释
 #  redis:
@@ -49,6 +60,7 @@ server:
     session:
       cookie:
         max-age: 2592000
+    max-request-size: 10MB
 mybatis-plus:
   configuration:
     map-underscore-to-camel-case: false
@@ -89,3 +101,8 @@ cos:
     bucket: xxx
 codesandbox:
   type: example
+minio:
+  url: http://124.222.184.3:9000
+  accessKey: 4xC93MbMSRnJNgE1JCfj
+  secretKey: EeemeISb0WFm2HmRInXgm3HJK6zvqOEg1QLVmeFA
+  bucketName: user
